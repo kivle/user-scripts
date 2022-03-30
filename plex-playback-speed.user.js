@@ -2,6 +2,7 @@
 // @name        Plex playback speed
 // @namespace   Violentmonkey Scripts
 // @match       https://app.plex.tv/*
+// @updateURL   https://github.com/kivle/user-scripts/raw/master/plex-playback-speed.user.js
 // @grant       none
 // @version     1.0
 // @author      -
