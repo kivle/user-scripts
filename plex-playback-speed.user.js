@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://app.plex.tv/*
 // @grant       none
-// @version     1.2
+// @version     1.3
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
@@ -25,9 +25,7 @@
     videoElement?.removeEventListener('ratechange', onSpeedChanged);
     videoElement = el;
     videoElement?.addEventListener('ratechange', onSpeedChanged);
-    if (!videoElement) {
-      updateActiveSpeedButton(0);
-    }
+    updateActiveSpeedButton(videoElement?.playbackRate ?? 0);
   }
 
   function onSpeedChanged(event) {
