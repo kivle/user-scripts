@@ -112,5 +112,11 @@
         setSpeed(i);
       }
     }
+    if (event.key === '+') {
+      setSpeed(videoElement?.playbackRate ?? 1 + 0.25);
+    }
+    else if (event.key === '-') {
+      setSpeed(videoElement?.playbackRate ?? 1 - 0.25);
+    }
   });
 })();
