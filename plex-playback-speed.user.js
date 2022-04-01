@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://app.plex.tv/*
 // @grant       none
-// @version     1.3
+// @version     1.4
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
