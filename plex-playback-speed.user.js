@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://app.plex.tv/*
 // @grant       none
-// @version     1.4
+// @version     1.5
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
@@ -13,11 +13,13 @@
   const ce = n => doc.createElement(n);
   const ui = buildUI();
   let videoElement = null;
+  let lastRate = 1;
   setVideoElement(doc.querySelector('video'));
 
   function setSpeed(spd) {
     if (videoElement) {
       videoElement.playbackRate = spd;
+      lastRate = spd;
     }
   }
 
@@ -25,6 +27,9 @@
     videoElement?.removeEventListener('ratechange', onSpeedChanged);
     videoElement = el;
     videoElement?.addEventListener('ratechange', onSpeedChanged);
+    if (videoElement && videoElement.playbackRate !== lastRate) {
+      setSpeed(lastRate);
+    }
     updateActiveSpeedButton(videoElement?.playbackRate ?? 0);
   }
 
