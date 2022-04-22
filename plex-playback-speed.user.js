@@ -2,24 +2,37 @@
 // @name        Plex playback speed
 // @namespace   Violentmonkey Scripts
 // @match       https://app.plex.tv/*
-// @grant       none
-// @version     1.5
+// @grant       GM_setValue
+// @grant       GM_getValue
+// @version     1.6
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
 
 (function() {
+  const lastRateKey = 'plex-playback-speed-last-rate';
   const doc = document;
   const ce = n => doc.createElement(n);
   const ui = buildUI();
   let videoElement = null;
-  let lastRate = 1;
   setVideoElement(doc.querySelector('video'));
+
+  function getLastRate() {
+    const rate = parseFloat(GM_getValue(lastRateKey, 1));
+    console.log(`GetLastRate: ${rate}`);
+    return rate;
+  }
+
+  function setLastRate(rate) {
+    console.log(`SetLastRate: ${rate}`);
+    GM_setValue(lastRateKey, rate);
+  }
 
   function setSpeed(spd) {
     if (videoElement) {
       videoElement.playbackRate = spd;
-      lastRate = spd;
+      if (spd > 0)
+        setLastRate(spd);
     }
   }
 
@@ -27,8 +40,9 @@
     videoElement?.removeEventListener('ratechange', onSpeedChanged);
     videoElement = el;
     videoElement?.addEventListener('ratechange', onSpeedChanged);
+    const lastRate = getLastRate();
     if (videoElement && videoElement.playbackRate !== lastRate) {
-      setSpeed(lastRate);
+      setTimeout(() => setSpeed(lastRate), 100);
     }
     updateActiveSpeedButton(videoElement?.playbackRate ?? 0);
   }
