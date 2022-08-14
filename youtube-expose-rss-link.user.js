@@ -11,22 +11,23 @@
 
 let lastLink = null;
 async function main() {
-  while (1) {
-    console.log("Waiting for rss link");
-    const linkTag = await window.waitForElement(
-      "link[rel='alternate'][type='application/rss+xml']"
+  // while (1) {
+  console.log("Waiting for rss link");
+  const linkTag = await window.waitForElement(
+    "link[rel='alternate'][type='application/rss+xml']"
+  );
+  if (linkTag.href !== lastLink) {
+    console.log("Waiting for subscriber count in header");
+    const subscriberCount = await window.waitForElement(
+      "yt-formatted-string#subscriber-count"
     );
-    if (linkTag.href !== lastLink) {
-      console.log("Waiting for subscriber count in header");
-      const subscriberCount = await window.waitForElement(
-        "yt-formatted-string#subscriber-count"
-      );
-      const rssLink = document.createElement("a");
-      rssLink.href = linkTag.href;
-      rssLink.textContent = "RSS";
-      subscriberCount.parentNode.appendChild(rssLink);
-    }
+    const rssLink = document.createElement("a");
+    rssLink.href = linkTag.href;
+    rssLink.textContent = "RSS";
+    subscriberCount.parentNode.appendChild(rssLink);
+    lastLink = linkTag.href;
   }
+  // }
 }
 
 main();
