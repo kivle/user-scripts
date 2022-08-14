@@ -9,24 +9,18 @@
 // @require tools.js
 // ==/UserScript==
 
-let lastLink = null;
 async function main() {
-  console.log("Waiting for rss link");
   const linkTag = await window.waitForElement(
     "link[rel='alternate'][type='application/rss+xml']"
   );
-  lastLink = linkTag.href;
-  if (!!linkTag.href && linkTag.href !== lastLink) {
-    console.log("Waiting for subscriber count in header");
-    const subscriberCount = await window.waitForElement(
-      "yt-formatted-string#subscriber-count"
-    );
-    const rssLink = document.createElement("a");
-    rssLink.href = linkTag.href;
-    rssLink.textContent = "RSS";
-    rssLink.style.paddingLeft = "10px";
-    subscriberCount.parentNode.appendChild(rssLink);
-  }
+  const subscriberCount = await window.waitForElement(
+    "yt-formatted-string#subscriber-count"
+  );
+  const rssLink = document.createElement("a");
+  rssLink.href = linkTag.href;
+  rssLink.textContent = "RSS";
+  rssLink.style.paddingLeft = "10px";
+  subscriberCount.parentNode.appendChild(rssLink);
 }
 
 main();
