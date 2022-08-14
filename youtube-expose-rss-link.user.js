@@ -30,4 +30,3 @@ async function main() {
 }
 
 main();
-window.addEventListener("popstate", main);
