@@ -12,10 +12,12 @@
 let lastLink = null;
 async function main() {
   while (1) {
+    console.log("Waiting for rss link");
     const linkTag = await window.waitForElement(
-      "link[rel='alternate' and type='application/rss+xml']"
+      "link[rel='alternate'][type='application/rss+xml']"
     );
     if (linkTag.href !== lastLink) {
+      console.log("Waiting for subscriber count in header");
       const subscriberCount = await window.waitForElement(
         "yt-formatted-string#subscriber-count"
       );
