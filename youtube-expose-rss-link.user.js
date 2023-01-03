@@ -7,21 +7,42 @@
 // @version     1.0
 // @author      -
 // @description 8/14/2022, 10:54:50 AM
-// @require tools.js
 // ==/UserScript==
 
+function inject(subscriberCountNode) {
+  if (!document.querySelector("a.rssLink")) {
+    const rssLink = document.createElement("a");
+    rssLink.classList.add("rssLink");
+    rssLink.href = linkTag.href;
+    rssLink.textContent = "RSS";
+    rssLink.style.paddingLeft = "10px";
+    subscriberCountNode.parentNode.appendChild(rssLink);
+  }
+}
+
+function mutationHandler(mutations) {
+  for (let node of mutations.addedNodes) {
+    if (
+      node.nodeName === "yt-formatted-string" &&
+      node.classList.contains("subscriber-count")
+    ) {
+      inject(node);
+    }
+  }
+}
+
 async function main() {
-  const linkTag = await window.waitForElement(
-    "link[rel='alternate'][type='application/rss+xml']"
-  );
-  const subscriberCount = await window.waitForElement(
+  const subscriberCount = document.querySelector(
     "yt-formatted-string#subscriber-count"
   );
-  const rssLink = document.createElement("a");
-  rssLink.href = linkTag.href;
-  rssLink.textContent = "RSS";
-  rssLink.style.paddingLeft = "10px";
-  subscriberCount.parentNode.appendChild(rssLink);
+  if (subscriberCount) {
+    inject(subscriberCount);
+  }
+  const observer = new MutationObserver(inject);
+  observer.observe(document, {
+    childList: true,
+    subtree: true,
+  });
 }
 
 main();
