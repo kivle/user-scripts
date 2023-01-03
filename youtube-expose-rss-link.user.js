@@ -23,7 +23,7 @@ function inject(subscriberCountNode) {
       rssLink.href = linkTag.href;
       rssLink.textContent = "RSS";
       rssLink.style.paddingLeft = "10px";
-      subscriberCountNode.parentNode.appendChild(rssLink);
+      subscriberCountNode.parentNode.append(rssLink);
     }
   }
 }
