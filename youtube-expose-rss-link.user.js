@@ -31,13 +31,15 @@ function inject(subscriberCountNode) {
 
 function mutationHandler(mutations) {
   console.debug("received mutations from mutationobserver");
-  for (let node of mutations.addedNodes) {
-    if (
-      node.nodeName === "yt-formatted-string" &&
-      node.classList.contains("subscriber-count")
-    ) {
-      console.debug("addedNode", node);
-      inject(node);
+  for (let record of mutations) {
+    for (let node of record.addedNodes) {
+      if (
+        node.nodeName === "yt-formatted-string" &&
+        node.classList.contains("subscriber-count")
+      ) {
+        console.debug("addedNode", node);
+        inject(node);
+      }
     }
   }
 }
