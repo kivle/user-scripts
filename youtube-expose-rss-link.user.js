@@ -12,13 +12,18 @@
 function inject(subscriberCountNode) {
   console.debug("inject()", subscriberCountNode);
   if (!document.querySelector("a.rssLink")) {
-    console.debug("Inserting rssLink");
-    const rssLink = document.createElement("a");
-    rssLink.classList.add("rssLink");
-    rssLink.href = linkTag.href;
-    rssLink.textContent = "RSS";
-    rssLink.style.paddingLeft = "10px";
-    subscriberCountNode.parentNode.appendChild(rssLink);
+    const linkTag = document.querySelector(
+      "link[rel='alternate'][type='application/rss+xml']"
+    );
+    if (linkTag) {
+      console.debug("Inserting rssLink");
+      const rssLink = document.createElement("a");
+      rssLink.classList.add("rssLink");
+      rssLink.href = linkTag.href;
+      rssLink.textContent = "RSS";
+      rssLink.style.paddingLeft = "10px";
+      subscriberCountNode.parentNode.appendChild(rssLink);
+    }
   }
 }
 
