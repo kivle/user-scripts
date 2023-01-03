@@ -33,7 +33,7 @@ function mutationHandler(mutations) {
   for (let record of mutations) {
     for (let node of record?.addedNodes) {
       if (
-        node.nodeName === "yt-formatted-string" &&
+        node.nodeName === "YT-FORMATTED-STRING" &&
         node.classList.contains("subscriber-count")
       ) {
         console.debug("addedNode", node);
