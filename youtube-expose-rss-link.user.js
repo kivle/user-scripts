@@ -10,9 +10,11 @@
 
 console.log("Loading expose youtube rss link script");
 
-function inject(subscriberCountNode) {
-  console.debug("inject()", subscriberCountNode);
-  if (!document.querySelector("a.rssLink")) {
+function inject() {
+  const subscriberCountNode = document.querySelector(
+    "yt-formatted-string#subscriber-count"
+  );
+  if (subscriberCountNode && !document.querySelector("a.rssLink")) {
     const linkTag = document.querySelector(
       "link[rel='alternate'][type='application/rss+xml']"
     );
@@ -28,29 +30,9 @@ function inject(subscriberCountNode) {
   }
 }
 
-function mutationHandler(mutations) {
-  console.debug("received mutations from mutationobserver");
-  for (let record of mutations) {
-    for (let node of record?.addedNodes) {
-      if (
-        node.nodeName === "YT-FORMATTED-STRING" &&
-        node.classList.contains("subscriber-count")
-      ) {
-        console.debug("addedNode", node);
-        inject(node);
-      }
-    }
-  }
-}
-
 async function main() {
-  const subscriberCount = document.querySelector(
-    "yt-formatted-string#subscriber-count"
-  );
-  if (subscriberCount) {
-    inject(subscriberCount);
-  }
-  const observer = new MutationObserver(mutationHandler);
+  inject();
+  const observer = new MutationObserver(inject);
   observer.observe(document, {
     childList: true,
     subtree: true,
