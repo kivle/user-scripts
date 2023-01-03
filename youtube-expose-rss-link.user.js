@@ -10,7 +10,9 @@
 // ==/UserScript==
 
 function inject(subscriberCountNode) {
+  console.debug("inject()", subscriberCountNode);
   if (!document.querySelector("a.rssLink")) {
+    console.debug("Inserting rssLink");
     const rssLink = document.createElement("a");
     rssLink.classList.add("rssLink");
     rssLink.href = linkTag.href;
@@ -21,11 +23,13 @@ function inject(subscriberCountNode) {
 }
 
 function mutationHandler(mutations) {
+  console.debug("received mutations from mutationobserver");
   for (let node of mutations.addedNodes) {
     if (
       node.nodeName === "yt-formatted-string" &&
       node.classList.contains("subscriber-count")
     ) {
+      console.debug("addedNode", node);
       inject(node);
     }
   }
