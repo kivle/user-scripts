@@ -31,7 +31,7 @@ function inject(subscriberCountNode) {
 function mutationHandler(mutations) {
   console.debug("received mutations from mutationobserver");
   for (let record of mutations) {
-    for (let node of record.addedNodes) {
+    for (let node of record?.addedNodes) {
       if (
         node.nodeName === "yt-formatted-string" &&
         node.classList.contains("subscriber-count")
@@ -50,7 +50,7 @@ async function main() {
   if (subscriberCount) {
     inject(subscriberCount);
   }
-  const observer = new MutationObserver(inject);
+  const observer = new MutationObserver(mutationHandler);
   observer.observe(document, {
     childList: true,
     subtree: true,
