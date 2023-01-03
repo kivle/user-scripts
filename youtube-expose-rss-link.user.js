@@ -9,6 +9,8 @@
 // @description 8/14/2022, 10:54:50 AM
 // ==/UserScript==
 
+console.log("Loading expose youtube rss link script");
+
 function inject(subscriberCountNode) {
   console.debug("inject()", subscriberCountNode);
   if (!document.querySelector("a.rssLink")) {
