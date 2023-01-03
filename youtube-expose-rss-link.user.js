@@ -1,9 +1,7 @@
 // ==UserScript==
 // @name        Exposes link to the rss feed for a channel for easy copy-paste
 // @namespace   Violentmonkey Scripts
-// @match       https://www.youtube.com/channel/*
-// @match       https://www.youtube.com/c/*
-// @match       https://www.youtube.com/*
+// @match       https://*.youtube.com/*
 // @grant       none
 // @version     1.0
 // @author      -
