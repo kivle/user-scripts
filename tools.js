@@ -1,19 +1,19 @@
-window.waitForElement = async (elementSelector) => {
+window.waitForElement = (elementSelector, parent = document) => {
   return new Promise((resolve, reject) => {
-    const element = document.querySelector(elementSelector);
+    const element = parent.querySelector(elementSelector);
     if (element) {
       resolve(element);
       return;
     }
 
     const observer = new MutationObserver(() => {
-      const el = document.querySelector(elementSelector);
+      const el = parent.querySelector(elementSelector);
       if (el) {
         observer.disconnect();
         resolve(el);
       }
     });
-    observer.observe(document, {
+    observer.observe(parent, {
       childList: true,
       subtree: true,
     });
