@@ -4,7 +4,7 @@
 // @match       https://tv.nrk.no/*
 // @grant       none
 // @require     https://raw.githubusercontent.com/kivle/user-scripts/master/tools.js
-// @version     1.1
+// @version     1.2
 // @author      -
 // ==/UserScript==
 
@@ -26,6 +26,11 @@ async function inject() {
     right: 0;
     position: absolute;
     z-index: 9999;
+  }
+  .maximizedPlayer tv-player {
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
   }
   .injectedButton {
     height: 44px;
