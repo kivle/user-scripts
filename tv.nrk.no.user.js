@@ -4,7 +4,7 @@
 // @match       https://tv.nrk.no/*
 // @grant       none
 // @require     https://raw.githubusercontent.com/kivle/user-scripts/master/tools.js
-// @version     1.0
+// @version     1.1
 // @author      -
 // ==/UserScript==
 
@@ -30,13 +30,13 @@ async function inject() {
   .injectedButton {
     height: 44px;
     width: 44px;
-    font-size: 1.6em;
+    font-size: 2em;
   }
   `
   document.head.append(style)
 
   const button = document.createElement("button")
-  button.textContent = "M"
+  button.textContent = "▭"
   button.className = "tv-player-button injectedButton"
   button.type = "button"
   const handler = (event) => {
