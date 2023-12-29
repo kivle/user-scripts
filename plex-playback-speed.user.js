@@ -4,7 +4,7 @@
 // @match       https://app.plex.tv/*
 // @grant       GM_setValue
 // @grant       GM_getValue
-// @version     1.7
+// @version     1.8
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
@@ -28,11 +28,11 @@
     GM_setValue(lastRateKey, rate);
   }
 
-  function setSpeed(spd) {
+  function setRate(rate) {
     if (videoElement) {
-      videoElement.playbackRate = spd;
-      if (spd > 0)
-        setLastRate(spd);
+      videoElement.playbackRate = rate;
+      if (rate > 0)
+        setLastRate(rate);
     }
   }
 
@@ -42,7 +42,7 @@
     videoElement?.addEventListener('ratechange', onSpeedChanged);
     const lastRate = getLastRate();
     if (videoElement && videoElement.playbackRate !== lastRate) {
-      setTimeout(() => setSpeed(lastRate), 100);
+      setTimeout(() => setRate(lastRate), 100);
     }
     updateActiveSpeedButton(videoElement?.playbackRate ?? 0);
   }
@@ -90,7 +90,7 @@
       btn.dataset.speed = spd;
       btn.innerText = `${spd}x`;
       btn.addEventListener('click', () => {
-        setSpeed(spd);
+        setRate(spd);
       });
       ui.appendChild(btn);
     });
@@ -125,17 +125,28 @@
     subtree: true
   });
 
+  let rememberedRate = null;
   doc.addEventListener('keydown', event => {
     for (let i = 1; i <= 9; i++) {
       if (event.key === `${i}`) {
-        setSpeed(i);
+        setRate(i);
       }
     }
     if (event.key === '+') {
-      setSpeed((videoElement?.playbackRate ?? 1) + 0.25);
+      setRate((videoElement?.playbackRate ?? 1) + 0.25);
     }
     else if (event.key === '-') {
-      setSpeed((videoElement?.playbackRate ?? 1) - 0.25);
+      setRate((videoElement?.playbackRate ?? 1) - 0.25);
+    }
+    else if (event.key === '<') {
+      const currentRate = videoElement?.playbackRate;
+      if (currentRate === 8 && rememberedRate) {
+        setRate(rememberedRate);
+      }
+      else {
+        rememberedRate = currentRate;
+        setRate(8);
+      }
     }
   });
 })();
