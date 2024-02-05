@@ -1,21 +1,45 @@
 window.waitForElement = (elementSelector, parent = document) => {
   return new Promise((resolve, reject) => {
-    const element = parent.querySelector(elementSelector);
+    const element = parent.querySelector(elementSelector)
     if (element) {
-      resolve(element);
-      return;
+      resolve(element)
+      return
     }
 
     const observer = new MutationObserver(() => {
-      const el = parent.querySelector(elementSelector);
+      const el = parent.querySelector(elementSelector)
       if (el) {
-        observer.disconnect();
-        resolve(el);
+        observer.disconnect()
+        resolve(el)
       }
-    });
+    })
     observer.observe(parent, {
       childList: true,
       subtree: true,
-    });
-  });
-};
+    })
+  })
+}
+
+window.waitForElementToBeRemoved = (elementSelector, parent = document) => {
+  return new Promise((resolve, reject) => {
+    const element = parent.querySelector(elementSelector)
+    if (!element) {
+      resolve()
+      return
+    }
+    const observer = new MutationObserver((mutations) => {
+      if (mutations.removedNodes?.length) {
+        const element = parent.querySelector(elementSelector)
+        if (!element) {
+          observer.disconnect()
+          resolve()
+          return
+        }
+      }
+    })
+    observer.observe(parent, {
+      childList: true,
+      subtree: true
+    })
+  })
+}
