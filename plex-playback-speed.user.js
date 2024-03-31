@@ -4,7 +4,7 @@
 // @match       https://app.plex.tv/*
 // @grant       GM_setValue
 // @grant       GM_getValue
-// @version     1.10
+// @version     1.11
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
@@ -90,7 +90,7 @@
       }
 
       .playback-speed-inject-ui > button.bigger {
-        font-size: 1.8em;
+        font-size: 2.0em;
       }
     `;
     ui.appendChild(style);
@@ -108,6 +108,7 @@
     });
     const quickSwap = ce('button');
     quickSwap.innerText = "↻";
+    quickSwap.classList.add('bigger');
     quickSwap.addEventListener('click', quickSwapRate);
     ui.appendChild(quickSwap);
     return ui;
