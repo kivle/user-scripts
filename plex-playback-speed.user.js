@@ -82,7 +82,7 @@
       }
     `;
     ui.appendChild(style);
-    [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4, 6, 8].forEach(spd => {
+    [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4, 6, 8, 10, 12, 14, 16].forEach(spd => {
       const btn = ce('button');
       if (spd === 1) {
         btn.classList.add('bigger');
@@ -126,6 +126,7 @@
   });
 
   let rememberedRate = null;
+  const quickRate = 16;
   doc.addEventListener('keydown', event => {
     for (let i = 1; i <= 9; i++) {
       if (event.key === `${i}`) {
@@ -140,12 +141,12 @@
     }
     else if (event.key === '<') {
       const currentRate = videoElement?.playbackRate;
-      if (currentRate === 8 && rememberedRate) {
+      if (currentRate === quickRate && rememberedRate) {
         setRate(rememberedRate);
       }
       else {
         rememberedRate = currentRate;
-        setRate(8);
+        setRate(quickRate);
       }
     }
   });
