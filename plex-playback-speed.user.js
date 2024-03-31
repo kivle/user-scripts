@@ -4,7 +4,7 @@
 // @match       https://app.plex.tv/*
 // @grant       GM_setValue
 // @grant       GM_getValue
-// @version     1.8
+// @version     1.9
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
