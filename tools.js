@@ -28,12 +28,14 @@ window.waitForElementToBeRemoved = (elementSelector, parent = document) => {
       return
     }
     const observer = new MutationObserver((mutations) => {
-      if (mutations.removedNodes?.length) {
-        const element = parent.querySelector(elementSelector)
-        if (!element) {
-          observer.disconnect()
-          resolve()
-          return
+      for (const mutation of mutations) {
+        if (mutation.removedNodes?.length) {
+          const element = parent.querySelector(elementSelector)
+          if (!element) {
+            observer.disconnect()
+            resolve()
+            return
+          }
         }
       }
     })
