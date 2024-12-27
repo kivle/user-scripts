@@ -4,7 +4,7 @@
 // @match       https://tv.nrk.no/*
 // @grant       none
 // @require     https://raw.githubusercontent.com/kivle/user-scripts/master/tools.js
-// @version     1.2
+// @version     1.3
 // @author      -
 // ==/UserScript==
 
@@ -15,6 +15,9 @@ async function inject() {
 
   const style = document.createElement("style")
   style.textContent = `
+  body:has(.maximizedPlayer) {
+    overflow: hidden !important;
+  }
   .maximizedPlayer {
     border-radius: unset !important;
     margin-inline: unset !important;
@@ -48,6 +51,7 @@ async function inject() {
     event.preventDefault()
     event.stopPropagation()
     container.classList.toggle("maximizedPlayer")
+    window.scrollTo(0, 0)
     return true
   }
   button.addEventListener("click", handler, true)
