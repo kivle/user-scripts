@@ -4,7 +4,7 @@
 // @match       https://app.plex.tv/*
 // @grant       GM_setValue
 // @grant       GM_getValue
-// @version     1.11
+// @version     1.12
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
@@ -29,11 +29,11 @@
     GM_setValue(lastRateKey, rate);
   }
 
-  function setRate(rate) {
+  function setRate(rate, doNotUpdateLastRate) {
     if (videoElement) {
       const oldRate = videoElement.playbackRate;
       videoElement.playbackRate = rate;
-      if (rate > 0) {
+      if (!doNotUpdateLastRate && rate > 0) {
         setLastRate(rate);
         if (oldRate != rate) {
           rateHistory = [rate, oldRate];
@@ -54,7 +54,7 @@
     videoElement?.addEventListener('ratechange', onSpeedChanged);
     const lastRate = getLastRate();
     if (videoElement && videoElement.playbackRate !== lastRate) {
-      setTimeout(() => setRate(lastRate), 100);
+      setTimeout(() => setRate(lastRate, true), 100);
     }
     updateActiveSpeedButton(videoElement?.playbackRate ?? 0);
   }
@@ -126,7 +126,7 @@
           if (node.nodeName === 'VIDEO') {
             setVideoElement(node);
           }
-        }        
+        }
       }
     }
     const controls = doc.querySelector('div[class*="PlayerControls-buttonGroupCenter"]');
