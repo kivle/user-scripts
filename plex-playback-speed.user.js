@@ -2,9 +2,9 @@
 // @name        Plex playback speed
 // @namespace   Violentmonkey Scripts
 // @match       https://app.plex.tv/*
-// @grant       GM_setValue
-// @grant       GM_getValue
-// @version     1.12
+// @grant       GM.setValue
+// @grant       GM.getValue
+// @version     1.13
 // @author      -
 // @description 3/30/2022, 1:32:15 AM
 // ==/UserScript==
@@ -18,23 +18,23 @@
   let videoElement = null;
   setVideoElement(doc.querySelector('video'));
 
-  function getLastRate() {
-    const rate = parseFloat(GM_getValue(lastRateKey, 1));
+  async function getLastRate() {
+    const rate = parseFloat(await GM.getValue(lastRateKey, 1));
     console.log(`GetLastRate: ${rate}`);
     return rate;
   }
 
-  function setLastRate(rate) {
+  async function setLastRate(rate) {
     console.log(`SetLastRate: ${rate}`);
-    GM_setValue(lastRateKey, rate);
+    await GM.setValue(lastRateKey, rate);
   }
 
-  function setRate(rate, doNotUpdateLastRate) {
+  async function setRate(rate, doNotUpdateLastRate) {
     if (videoElement) {
       const oldRate = videoElement.playbackRate;
       videoElement.playbackRate = rate;
       if (!doNotUpdateLastRate && rate > 0) {
-        setLastRate(rate);
+        await setLastRate(rate);
         if (oldRate != rate) {
           rateHistory = [rate, oldRate];
         }
@@ -52,11 +52,12 @@
     videoElement?.removeEventListener('ratechange', onSpeedChanged);
     videoElement = el;
     videoElement?.addEventListener('ratechange', onSpeedChanged);
-    const lastRate = getLastRate();
-    if (videoElement && videoElement.playbackRate !== lastRate) {
-      setTimeout(() => setRate(lastRate, true), 100);
-    }
     updateActiveSpeedButton(videoElement?.playbackRate ?? 0);
+    getLastRate().then(lastRate => {
+      if (videoElement && videoElement.playbackRate !== lastRate) {
+        setTimeout(() => setRate(lastRate, true), 100);
+      }
+    });
   }
 
   function onSpeedChanged(event) {
